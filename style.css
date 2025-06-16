@@ -45,7 +45,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 12px var(--shadow-color);
     width: 100%;
-    max-width: 800px;
+    max-width: 1140px; /* <--- UPDATED VALUE */
     transition: background-color 0.3s;
 }
 
@@ -87,7 +87,7 @@ iframe {
 /* --- THEME TOGGLE BUTTON --- */
 #theme-toggle {
     position: fixed;
-    top: 20px;
+    top: 150px; /* Moved down to be below the timer */
     right: 20px;
     background: var(--container-bg);
     color: var(--text-color);
@@ -107,9 +107,12 @@ iframe {
 
 /* --- CIRCULAR TIMER STYLES --- */
 .timer-clock-container {
-    margin: 2em auto;
-    width: 150px;
-    height: 150px;
+    position: fixed; /* Fix position to the viewport */
+    top: 20px;
+    right: 20px;
+    width: 120px; /* Made smaller for the corner */
+    height: 120px;
+    z-index: 1000; /* Ensure it's on top */
 }
 
 .timer-svg {
@@ -135,7 +138,7 @@ iframe {
 .timer-text {
     transform: rotate(90deg); /* Counter-rotate the text to be upright */
     fill: var(--timer-text-color);
-    font-size: 40px;
+    font-size: 32px; /* Adjusted for smaller circle */
     font-weight: bold;
     text-anchor: middle; /* Center the text */
     dominant-baseline: middle; /* Vertically align */

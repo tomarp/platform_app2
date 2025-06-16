@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentTheme) {
         applyTheme(currentTheme);
     } else {
-        applyTheme('light-theme');
+        applyTheme('dark-theme');
     }
 
     // Add click event to the toggle button
