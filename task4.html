@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 4: Image Puzzle</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="theme.js" defer></script>
+</head>
+<body>
+    <button id="theme-toggle" title="Toggle Light/Dark Theme">🌙</button>
+    <div class="container">
+        <div id="puzzle-task"></div>
+        <script src="puzzle.js"></script>
+
+        <div class="timer-clock-container">
+            <svg class="timer-svg" viewBox="0 0 100 100">
+                <circle class="timer-circle-bg" cx="50" cy="50" r="45"></circle>
+                <circle id="timer-progress" class="timer-circle-progress" cx="50" cy="50" r="45"></circle>
+                <text id="timer-seconds" class="timer-text"> </text>
+            </svg>
+        </div>
+    </div>
+    <script>
+        // --- CONFIGURATION ---
+        const timeLimitInMinutes = 3; // 3 minutes for the task
+        const nextPage = 'survey2.html';
+        // -------------------
+        const progressCircle = document.getElementById('timer-progress'), secondsText = document.getElementById('timer-seconds'), radius = progressCircle.r.baseVal.value, circumference = 2 * Math.PI * radius; progressCircle.style.strokeDasharray = circumference; progressCircle.style.strokeDashoffset = 0; let totalSeconds = Math.round(timeLimitInMinutes * 60), remainingSeconds = totalSeconds; function setProgress(t){const e=circumference-t/100*circumference;progressCircle.style.strokeDashoffset=e}secondsText.textContent=remainingSeconds,setProgress(100),setTimeout(()=>{window.location.href=nextPage},1e3*totalSeconds);const countdownInterval=setInterval(()=>{remainingSeconds--;const t=remainingSeconds/totalSeconds*100;secondsText.textContent=remainingSeconds,setProgress(t),remainingSeconds<=0&&(clearInterval(countdownInterval),secondsText.textContent="0")},1e3);
+    </script>
+</body>
+</html>
