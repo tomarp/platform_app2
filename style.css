@@ -26,12 +26,9 @@ body.dark-theme {
 /* --- GENERAL STYLES --- */
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
     margin: 0;
-    padding: 20px;
+    /* Add padding to give space at the top/bottom and sides */
+    padding: 4rem 2rem;
     box-sizing: border-box;
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -84,11 +81,21 @@ iframe {
     max-width: 640px;
 }
 
-/* --- THEME TOGGLE BUTTON --- */
-#theme-toggle {
+/* This new rule will position the container for our controls */
+.top-right-controls {
     position: fixed;
-    top: 150px; /* Moved down to be below the timer */
+    top: 20px;
     right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem; /* Adds space between the timer and the button */
+}
+
+/* --- THEME TOGGLE BUTTON (Simplified) --- */
+#theme-toggle {
+    /* position: fixed is no longer needed here */
     background: var(--container-bg);
     color: var(--text-color);
     border: 1px solid var(--timer-track-color);
@@ -102,21 +109,17 @@ iframe {
     align-items: center;
     box-shadow: 0 2px 5px var(--shadow-color);
     transition: background-color 0.3s, color 0.3s;
-    z-index: 1000;
 }
 
-/* --- CIRCULAR TIMER STYLES --- */
+/* --- CIRCULAR TIMER STYLES (Simplified) --- */
 .timer-clock-container {
-    position: fixed; /* Fix position to the viewport */
-    top: 20px;
-    right: 20px;
-    width: 120px; /* Made smaller for the corner */
+    /* position: fixed is no longer needed here */
+    width: 120px;
     height: 120px;
-    z-index: 1000; /* Ensure it's on top */
 }
 
 .timer-svg {
-    transform: rotate(-90deg); /* Start the circle from the top */
+    transform: rotate(-90deg);
     width: 100%;
     height: 100%;
 }
@@ -131,15 +134,15 @@ iframe {
     fill: none;
     stroke: var(--timer-progress-color);
     stroke-width: 10;
-    stroke-linecap: round; /* Makes the line ends round */
+    stroke-linecap: round;
     transition: stroke-dashoffset 1s linear;
 }
 
 .timer-text {
-    transform: rotate(90deg); /* Counter-rotate the text to be upright */
+    transform: rotate(90deg);
     fill: var(--timer-text-color);
-    font-size: 32px; /* Adjusted for smaller circle */
+    font-size: 32px;
     font-weight: bold;
-    text-anchor: middle; /* Center the text */
-    dominant-baseline: middle; /* Vertically align */
+    text-anchor: middle;
+    dominant-baseline: middle;
 }
