@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2: Color Identification</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="task-page">
+
+    <div id="theme-toggle"></div>
+    <div id="logos-placeholder"></div>
+    <div id="timer"></div>
+
+    <div class="container">
+        
+        <div id="stroop-container">
+
+            <div id="stroop-instructions">
+                <h1>Task 2: Color Identification</h1>
+                <p>You will see a series of words displayed one by one in different colors.</p>
+                <p class="instruction-emphasis">Your task is to identify the **COLOR** of the ink the word is written in, ignoring the word itself.</p>
+                
+                <p>Click the button that corresponds to the ink color as quickly and accurately as you can.</p>
+                
+                <button id="start-stroop-btn" class="nav-button">Start Task</button>
+            </div>
+
+            <div id="stroop-task-area" style="display: none;">
+                <div id="stroop-word-display"></div>
+                <div id="stroop-response-area">
+                    <button class="stroop-response-btn" data-color="Red">RED</button>
+                    <button class="stroop-response-btn" data-color="Green">GREEN</button>
+                    <button class="stroop-response-btn" data-color="Blue">BLUE</button>
+                    <button class="stroop-response-btn" data-color="Yellow">YELLOW</button>
+                </div>
+            </div>
+
+            <div id="stroop-completion" style="display: none;">
+                <h2>Task Complete</h2>
+                <p>Thank you for completing the color identification task.</p>
+                <button id="next-btn" data-next="task3_1.html">Continue to Next Task</button>
+            </div>
+
+        </div>
+        
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

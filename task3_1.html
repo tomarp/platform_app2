@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3: Image Counting</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="task-page">
+
+    <div id="theme-toggle"></div>
+    <div id="logos-placeholder"></div>
+    <div id="timer"></div>
+
+    <div class="container">
+        
+        <div id="image-task-container">
+
+            <div id="image-task-instructions">
+                <h1>Task 3: Visual Counting</h1>
+                <p>In this task, you will be shown a series of images.</p>
+                <p class="instruction-emphasis">For each image, read the question carefully and count the specified items. Type your answer (as a number) into the box and click "Submit".</p>
+                <p>Please be as accurate as possible.</p>
+                <button id="start-image-task-btn" class="nav-button">Start Task</button>
+            </div>
+
+            <div id="image-task-area" style="display: none;">
+                <img id="task-image" src="" alt="Visual counting task image">
+                <h3 id="task-question"></h3>
+                <div class="answer-submission">
+                    <input type="number" id="task-answer-input" placeholder="Enter count...">
+                    <button id="submit-answer-btn">Submit Answer</button>
+                </div>
+            </div>
+
+            <div id="image-task-completion" style="display: none;">
+                <h2>Task Complete</h2>
+                <p>Thank you for completing the visual counting task.</p>
+                <button id="next-btn" data-next="task4_1.html">Continue to Next Task</button>
+            </div>
+
+        </div>
+        
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

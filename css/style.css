@@ -1,0 +1,416 @@
+/* --- MODIFIED: Color Variables --- */
+:root {
+    --primary-bg-light: #f4f4f4;
+    --button-bg-light: #007bff;
+    --button-text-light: #ffffff;
+    --container-bg-light: rgba(255, 255, 255, 0.85);
+
+    --primary-bg-dark: #121212;
+    --button-bg-dark: #bb86fc;
+    --button-text-dark: #000000;
+    --container-bg-dark: rgba(30, 30, 30, 0.85);
+
+    --heading-color-light: #0d47a1;
+    --paragraph-color-light: #1a202c;
+
+    --heading-color-dark: #bb86fc;
+    --paragraph-color-dark: #e2e8f0;
+}
+
+html { box-sizing: border-box; }
+*, *:before, *:after { box-sizing: inherit; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--paragraph-color-light); 
+    background-color: var(--primary-bg-light);
+    overflow: hidden; 
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    z-index: -1;
+}
+
+body#welcome-page::before { background-image: url('../visuals/background/app2_poster.jpeg'); }
+body#survey1-page::before { background-image: url('../images/survey1_bg.jpg'); }
+body#baseline-page::before { background-image: url('../images/baseline_bg.jpg'); }
+body#survey2-page::before { background-image: url('../images/survey2_bg.jpg'); }
+body#task-page::before { background-image: url('../images/task_bg.jpg'); }
+
+body.dark-theme {
+    color: var(--paragraph-color-dark);
+    background-color: var(--primary-bg-dark);
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 20px;
+    text-align: center;
+    z-index: 10;
+}
+
+/* --- Typography & Colors Section --- */
+h1, h2, h3, h4 {
+    color: var(--heading-color-light);
+    font-weight: 700;
+    margin-bottom: 0.75em;
+}
+body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4 {
+    color: var(--heading-color-dark);
+}
+h1 { font-size: 3.5rem; }
+h2 { font-size: 2.5rem; }
+h3 { font-size: 1.8rem; }
+h4 { font-size: 1.5rem; }
+p { font-size: 1.2rem; line-height: 1.6; max-width: 70ch; }
+
+/* Theme Toggle Button Styling */
+#theme-toggle { position: fixed; top: 20px; left: 20px; z-index: 999; }
+#theme-switch-btn {
+    background-color: var(--container-bg-light);
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+body.dark-theme #theme-switch-btn { background-color: var(--container-bg-dark); border-color: #444; }
+#theme-switch-btn svg { color: var(--heading-color-light); }
+body.dark-theme #theme-switch-btn svg { color: var(--heading-color-dark); }
+.dark-theme .icon-sun { display: none; }
+.icon-moon { display: none; }
+.dark-theme .icon-moon { display: block; }
+
+/* SVG Timer Styling */
+#timer { position: fixed; top: 20px; right: 20px; z-index: 999; }
+.timer-svg { width: 100px; height: 100px; transform: rotate(-90deg); }
+.timer-track { stroke: rgba(0, 0, 0, 0.2); fill: transparent; }
+body.dark-theme .timer-track { stroke: rgba(255, 255, 255, 0.2); }
+.timer-progress { stroke: var(--button-bg-light); fill: transparent; transition: stroke-dashoffset 0.3s linear; }
+body.dark-theme .timer-progress { stroke: var(--button-bg-dark); }
+.timer-text { font-size: 1.8em; font-weight: bold; fill: var(--heading-color-light); transform: rotate(90deg); transform-origin: center; }
+body.dark-theme .timer-text { fill: var(--heading-color-dark); }
+
+/* Fixed Logo Positioning */
+.logo-fixed { position: fixed; z-index: 998; }
+.logo-fixed img { max-height: 50px; width: auto; }
+#logo-top-center { top: 20px; left: 50%; transform: translateX(-50%); }
+#logo-bottom-left { bottom: 20px; left: 20px; }
+#logo-bottom-center { bottom: 20px; left: 50%; transform: translateX(-50%); }
+#logo-bottom-right { bottom: 20px; right: 20px; }
+
+/* General Styles */
+.survey-container { width: 90%; max-width: 850px; height: 75vh; margin: 20px 0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.survey-container iframe { width: 100%; height: 100%; border: none; }
+
+
+/* --- N-Back Task Specific Styles --- */
+#n-back-container { width: 100%; }
+
+#n-back-instructions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* --- CORRECTED: Force-center instruction text --- */
+/* This direct style on the paragraph ensures it is always centered. */
+#n-back-instructions p {
+    text-align: center;
+}
+
+#start-n-back-btn {
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 1em;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+#start-n-back-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+#start-n-back-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+#stimulus-display {
+    width: 150px;
+    height: 150px;
+    margin: 1em auto;
+    border: 3px solid var(--heading-color-light);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+    font-weight: bold;
+}
+body.dark-theme #stimulus-display {
+    border-color: var(--heading-color-dark);
+}
+
+/* --- MODIFIED: New slide-in animation --- */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+.stimulus-animate {
+    animation: slideIn 0.4s ease-out;
+}
+
+.response-buttons { margin-top: 2em; display: flex; justify-content: center; gap: 20px; }
+.response-buttons .response-btn { min-width: 150px; padding: 15px; font-size: 1.2em; }
+#final-scores-display { margin: 2em 0; font-size: 1.2em; }
+#final-scores-display p { margin: 0.5em 0; }
+#final-scores-display strong { color: var(--heading-color-light); }
+body.dark-theme #final-scores-display strong { color: var(--heading-color-dark); }
+
+
+/* --- Enhanced All Navigation Buttons --- */
+button#next-btn, .nav-button {
+    background-color: var(--button-bg-light);
+    color: var(--button-text-light);
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s;
+}
+body.dark-theme button#next-btn, body.dark-theme .nav-button {
+    background-color: var(--button-bg-dark);
+    color: var(--button-text-dark);
+}
+button#next-btn:hover, .nav-button:hover { 
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+
+/* --- Login Form Styles for Welcome Page --- */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5em;
+    margin: 2em 0;
+    width: 100%;
+    max-width: 400px;
+}
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.input-group label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+body.dark-theme .input-group input {
+    background-color: #333;
+    border-color: #555;
+    color: #eee;
+}
+/* This enhances the main Start/Next buttons */
+button#next-btn, #show-login-btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s;
+}
+button#next-btn:hover:not(:disabled), #show-login-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+button#next-btn:disabled {
+    background-color: #999;
+    border-color: #999;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+/* --- Emotional Stroop Task Specific Styles --- */
+
+#stroop-container {
+    width: 100%;
+}
+
+#stroop-instructions .instruction-emphasis {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--heading-color-light);
+    border: 2px solid var(--heading-color-light);
+    padding: 1em;
+    border-radius: 8px;
+    margin: 1em 0;
+}
+body.dark-theme #stroop-instructions .instruction-emphasis {
+    color: var(--heading-color-dark);
+    border-color: var(--heading-color-dark);
+}
+
+#stroop-word-display {
+    font-weight: bold;
+    font-size: 4rem;
+    min-height: 100px; /* Reserve space to prevent layout jumps */
+    margin-bottom: 1em;
+}
+
+#stroop-response-area {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 2em;
+    flex-wrap: wrap;
+}
+
+/* MODIFIED: Button styles are now black & white and theme-aware */
+.stroop-response-btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    min-width: 140px;
+    transition: transform 0.1s ease, background-color 0.2s, color 0.2s;
+    background-color: var(--primary-bg-light);
+    color: var(--primary-text-light);
+    border: 2px solid var(--primary-text-light);
+}
+
+.stroop-response-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+.stroop-response-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Style for dark theme */
+body.dark-theme .stroop-response-btn {
+    background-color: var(--primary-bg-dark);
+    color: var(--primary-text-dark);
+    border: 2px solid var(--primary-text-dark);
+}
+
+/* --- Image Counting Task Specific Styles --- */
+
+#image-task-container {
+    width: 100%;
+}
+
+#image-task-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5em;
+}
+
+#task-image {
+    max-width: 80%;
+    max-height: 50vh;
+    border-radius: 8px;
+    border: 3px solid #ccc;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+body.dark-theme #task-image {
+    border-color: #555;
+}
+
+#task-question {
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.answer-submission {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+#task-answer-input {
+    font-size: 1.5rem;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#submit-answer-btn {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--button-bg-light);
+    color: var(--button-text-light);
+    border: none;
+}
+body.dark-theme #submit-answer-btn {
+    background-color: var(--button-bg-dark);
+    color: var(--button-text-dark);
+}
+#submit-answer-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
