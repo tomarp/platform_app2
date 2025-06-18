@@ -87,12 +87,23 @@ const logosHTML = `<div id="logo-top-center" class="logo-fixed"><img src="images
  * @returns {string} The specific event type string for logging.
  */
 function getEventTypeForPage(pageName) {
-    if (pageName.includes('survey')) return `Survey_${pageName.match(/(\d+_\d+)/)[1] || '1'}`;
+    if (pageName.includes('survey')) {
+        const match = pageName.match(/survey(\d+)(?:_(\d+))?/);
+        // Creates Survey_1_1, Survey_2_1, Survey_2_2 etc.
+        return match ? `Survey_${match[1]}${match[2] ? '_' + match[2] : ''}` : 'Survey';
+    }
     if (pageName.includes('baseline')) return 'Baseline';
-    if (pageName.includes('task1')) return `NBack_Task_${pageName.match(/(\d+_\d+)/)[1]}`;
-    if (pageName.includes('task2')) return `Stroop_Task_${pageName.match(/(\d+_\d+)/)[1]}`;
-    if (pageName.includes('task3')) return `Image_Task_${pageName.match(/(\d+_\d+)/)[1]}`;
-    if (pageName.includes('task4')) return `Task_4_${pageName.match(/(\d+_\d+)/)[1]}`;
+    if (pageName.includes('task')) {
+        const match = pageName.match(/task(\d+)_(\d+)/);
+        if (match) {
+            // Creates Task_1_1, Task_2_1, etc.
+            let taskName = `Task_${match[1]}_${match[2]}`;
+            if (match[1] === '1') taskName = `NBack_Task_${match[2]}`;
+            if (match[1] === '2') taskName = `Stroop_Task_${match[2]}`;
+            return taskName;
+        }
+        return 'Task'; // Generic fallback
+    }
     if (pageName.includes('end.html')) return 'Full_Experiment';
     return 'Page_View';
 }
@@ -406,16 +417,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageTaskContainer = document.getElementById('image-task-container');
     if (imageTaskContainer) {
         const imageTaskData = [
-            { image: './visuals/task/numberOf/image1.png', question: 'Count the number of bicycles in the trees.', answer: 10 },
-            { image: './visuals/task/numberOf/image2.png', question: 'Count the number of bicycles in the image.', answer: 10 },
-            { image: './visuals/task/numberOf/image3.png', question: 'Count the number of books in the house structure.', answer: 10 },
-            { image: './visuals/task/numberOf/image4.png', question: 'Count the number of cubes.', answer: 10 },
-            { image: './visuals/task/numberOf/image5.png', question: 'Count the number of gate structures.', answer: 10 },
-            { image: './visuals/task/numberOf/image6.png', question: 'Count the number of pencils.', answer: 10 },
-            { image: './visuals/task/numberOf/image7.png', question: 'Count the number of rectangles.', answer: 10 },
-            { image: './visuals/task/numberOf/image8.png', question: 'Count the number of squares.', answer: 10 },
-            { image: './visuals/task/numberOf/image9.png', question: 'Count the number of triangles.', answer: 10 },
-            { image: './visuals/task/numberOf/image10.png', question: 'Count the number of triangles.', answer: 10 }
+            { image: './visuals/task/count/image1.png', question: 'Count the number of bicycles in the trees.', answer: 10 },
+            { image: './visuals/task/count/image2.png', question: 'Count the number of bicycles in the image.', answer: 10 },
+            { image: './visuals/task/count/image3.png', question: 'Count the number of books in the house structure.', answer: 10 },
+            { image: './visuals/task/count/image4.png', question: 'Count the number of cubes.', answer: 10 },
+            { image: './visuals/task/count/image5.png', question: 'Count the number of gate structures.', answer: 10 },
+            { image: './visuals/task/count/image6.png', question: 'Count the number of pencils.', answer: 10 },
+            { image: './visuals/task/count/image7.png', question: 'Count the number of rectangles.', answer: 10 },
+            { image: './visuals/task/count/image8.png', question: 'Count the number of squares.', answer: 10 },
+            { image: './visuals/task/count/image9.png', question: 'Count the number of triangles.', answer: 10 },
+            { image: './visuals/task/count/image10.png', question: 'Count the number of triangles.', answer: 10 }
         ];
 
         const instructionsDiv = document.getElementById('image-task-instructions');
