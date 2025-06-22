@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2 (Round 2): Color Identification</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="task-page">
+    <div id="theme-toggle"></div>
+    <div id="logos-placeholder"></div>
+    <div id="timer"></div>
+    <div class="container">
+        <div id="stroop-container">
+            <div id="stroop-instructions">
+                <h1>Task 2 (Round 2): Color Identification</h1>
+                <p>You will see a series of images of words. Your task is to identify the **COLOR** of the ink the word is written in, ignoring the word itself.</p>
+                <button id="start-stroop-btn" class="nav-button">Start Task</button>
+            </div>
+            <div id="stroop-task-area" style="display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 350px;">
+                <img id="fixation-spinner" src="media/spinner.gif" alt="Loading..." style="display: none; height: 80px;">
+                <img id="stroop-word-image" src="" alt="Stroop Stimulus" style="display: none;"/>
+                <div id="stroop-response-area">
+                    <button class="stroop-response-btn" data-color="Red">RED</button>
+                    <button class="stroop-response-btn" data-color="Green">GREEN</button>
+                    <button class="stroop-response-btn" data-color="Blue">BLUE</button>
+                    <button class="stroop-response-btn" data-color="Yellow">YELLOW</button>
+                </div>
+            </div>
+            <div id="stroop-completion" style="display: none;">
+                <h2>Task Complete</h2>
+                <p>Thank you. Please press continue.</p>
+                <button id="next-btn">Continue to Next Task</button>
+            </div>
+        </div>
+        <div id="timer-next-btn-container"></div>
+        
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tasks/stroop.js"></script>
+</body>
+</html>

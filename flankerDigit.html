@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 4 (Round 2): Flanker Task</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Add styles for R2 Spatial Flanker Task */
+        .spatial-flanker {
+            margin: auto;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .spatial-flanker td {
+            font-size: 4rem;
+            min-height: 80px;
+            min-width: 200px;
+            vertical-align: middle;
+            padding: 10px;
+        }
+        .spatial-flanker .fixation-row {
+            font-size: 3rem;
+        }
+    </style>
+</head>
+<body id="task-page">
+    <div id="theme-toggle"></div>
+    <div id="logos-placeholder"></div>
+    <div id="timer"></div>
+    <div class="container">
+        <div id="flanker-container">
+            <div id="flanker-instructions">
+                <h1 id="flanker-title"></h1>
+                <div id="flanker-instruction-text"></div>
+                <button id="start-flanker-btn" class="nav-button">Start</button>
+            </div>
+            <div id="flanker-task-area" style="display: none;">
+                <div id="flanker-stimulus"></div>
+                <div id="flanker-response-area"></div>
+            </div>
+            <div id="flanker-completion" style="display: none;">
+                <h2>Task Complete</h2>
+                <p>Thank you for completing the attention task.</p>
+                <button id="next-btn">Continue</button>
+            </div>
+        </div>
+        <div id="timer-next-btn-container"></div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tasks/flanker.js"></script>
+</body>
+</html>
