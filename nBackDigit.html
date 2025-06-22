@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 1: nBack</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="task-page">
+
+    <div id="theme-toggle"></div>
+    <div id="logos-placeholder"></div>
+    <div id="timer"></div>
+
+    <div class="container">
+
+        <div id="n-back-container">
+
+            <div id="n-back-instructions">
+                <h1 id="n-back-title"></h1>
+                <h3 id="n-back-instruction-text"></h3>
+                <button id="start-n-back-btn" class="nav-button"></button>
+            </div>
+            
+            <div id="n-back-task-area" style="display: none;">
+                <div id="stimulus-display"></div>
+                <div class="response-buttons">
+                    <button class="response-btn" data-answer="TARGET">TARGET</button>
+                    <button class="response-btn" data-answer="NON-TARGET">NON-TARGET</button>
+                </div>
+            </div>
+
+            <div id="n-back-completion" style="display: none;">
+                <h2>Task Complete</h2>
+                <p>Thank you. Please press continue.</p>
+                <button id="next-btn">Continue to Next Task</button>
+            </div>
+        </div>
+        <div id="timer-next-btn-container"></div>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tasks/nBack.js"></script>
+</body>
+</html>

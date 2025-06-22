@@ -12,13 +12,16 @@
     <div id="logos-placeholder"></div>
     <div id="timer"></div>
 
-    <div class="container">
-        <h1>Welcome to the Experiment</h1>
-        
-        <button id="show-login-btn" class="nav-button">Login to Continue</button>
+    <main class="container">
+        <div id="initial-view">
+            <h1>Welcome to the Experiment</h1>
+            <p>Please log in to begin the experiment.</p>
+            <button id="show-login-btn" class="nav-button">Login</button>
+        </div>
 
         <div id="login-area" style="display: none;">
-            <p>Please enter your assigned IDs to begin.</p>
+            <h2>Login</h2>
+            <p>Please enter your assigned IDs.</p>
             <div class="login-form">
                 <div class="input-group">
                     <label for="participant-id">Participant ID</label>
@@ -29,11 +32,17 @@
                     <input type="text" id="session-id" placeholder="Enter Session ID" autocomplete="off">
                 </div>
             </div>
-            <button id="next-btn" data-next="survey1.html" disabled>Start Experiment</button>
+            <button id="submit-login-btn" class="nav-button" disabled>Submit IDs</button>
         </div>
 
-    </div>
+        <div id="start-area" style="display: none;">
+             <h1>WELCOME TO THE EXPERIMENT</h1>
+             <p>You are logged in. You may now begin the experiment.</p>
+             <button id="next-btn">START</button>
+        </div>
+    </main>
 
-    <script src="js/script.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

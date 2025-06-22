@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 3 (Round 2): Shape Comparison</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body id="task-page">
+    <div id="theme-toggle"></div>
+    <div id="logos-placeholder"></div>
+    <div id="timer"></div>
+    <div class="container">
+        <div id="image-task-container">
+            <div id="image-task-instructions">
+                <h1>Task 3 (Round 2): Shape Comparison</h1>
+                <p class="instruction-emphasis">For each image, determine if the two shapes are the <strong>SAME</strong> or <strong>DIFFERENT</strong>.</p>
+                <button id="start-image-task-btn" class="nav-button">Start Task</button>
+            </div>
+            <div id="image-task-area" style="display: none; flex-direction: column; align-items: center; gap: 1.5em;">
+                <img id="task-image" src="" alt="Shape comparison task image">
+                <div class="response-buttons">
+                    <button class="response-btn" data-answer="SAME">SAME</button>
+                    <button class="response-btn" data-answer="DIFFERENT">DIFFERENT</button>
+                </div>
+            </div>
+            <div id="image-task-completion" style="display: none;">
+                <h2>Task Complete</h2>
+                <p>Thank you for completing the shape comparison task.</p>
+                <button id="next-btn">Continue to Next Task</button>
+            </div>
+        </div>
+        <div id="timer-next-btn-container"></div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/tasks/visual.js"></script>
+</body>
+</html>

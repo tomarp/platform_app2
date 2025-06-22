@@ -49,11 +49,11 @@ body::before {
     z-index: -1;
 }
 
-body#welcome-page::before { background-image: url('../visuals/background/app2_poster.jpeg'); }
-body#survey1-page::before { background-image: url('../images/survey1_bg.jpg'); }
-body#baseline-page::before { background-image: url('../images/baseline_bg.jpg'); }
-body#survey2-page::before { background-image: url('../images/survey2_bg.jpg'); }
-body#task-page::before { background-image: url('../images/task_bg.jpg'); }
+body#welcome-page::before { background-image: url('../media/background/img1.png'); }
+body#survey1-page::before { background-image: url('../media/background/GalaxyArt.png'); }
+body#baseline-page::before { background-image: url('../media/background/GalaxyArt.png'); }
+body#survey2-page::before { background-image: url('../media/background/img1.png'); }
+body#task-page::before { background-image: url('../media/background/GalaxyArt.png'); }
 
 body.dark-theme {
     color: var(--paragraph-color-dark);
@@ -412,5 +412,110 @@ body.dark-theme #submit-answer-btn {
 #submit-answer-btn:disabled {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+/* --- Flanker Task Specific Styles --- */
+
+#flanker-container {
+    width: 100%;
+}
+
+#flanker-stimulus {
+    font-family: 'Courier New', Courier, monospace; /* Monospaced font for consistent spacing */
+    font-size: 5rem;
+    font-weight: bold;
+    letter-spacing: 0.25em; /* Space out the characters */
+    min-height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#flanker-response-area {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 2em;
+}
+
+.flanker-response-btn {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    min-width: 160px;
+    border: 2px solid var(--primary-text-light);
+    background-color: var(--primary-bg-light);
+    color: var(--primary-text-light);
+    transition: transform 0.1s ease;
+}
+
+.flanker-response-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+.flanker-response-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+body.dark-theme .flanker-response-btn {
+    background-color: var(--primary-bg-dark);
+    color: var(--primary-text-dark);
+    border-color: var(--primary-text-dark);
+}
+
+/* This rule targets the 'Next' button created by the timer in main.js */
+#timer-next-btn-container > #next-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000; /* Ensures the button is on top of other content */
+}
+
+/* --- (Existing styles before this section remain the same) --- */
+
+
+/* --- CORRECTED: Force-center instruction text --- */
+/* This rule is now part of the more general .instructions-container */
+#n-back-instructions p {
+    text-align: center;
+}
+
+/* --- NEW / MODIFIED: Styles for all task instruction pages --- */
+.instructions-container {
+    text-align: center;
+    max-width: 900px; /* Allow for a wider, more readable text block */
+    margin: 0 auto;   /* Center the container itself */
+    padding: 1em 2em; /* Add some spacing */
+}
+
+.instructions-container p {
+    margin: 1.5em auto; /* Add vertical space between paragraphs */
+    font-size: 1.3rem;  /* Make text slightly larger and more readable */
+    line-height: 1.7;
+}
+
+/* Enhanced style for the emphasis box */
+.instruction-emphasis {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-left: 5px solid var(--heading-color-light);
+    padding: 1.5em 2em;
+    margin: 2em 0;
+    border-radius: 8px;
+    font-size: 1.4rem !important; /* Ensure emphasis stands out */
+    color: var(--heading-color-light);
+    /* Remove old border style */
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+    text-align: left; /* Keep text left-aligned inside the box for readability */
+}
+
+body.dark-theme .instruction-emphasis {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-left-color: var(--heading-color-dark);
+    color: var(--heading-color-dark);
 }
 
