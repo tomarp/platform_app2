@@ -74,19 +74,19 @@ const FLANKER_FORM_ENTRIES = {
 
 // 6. PAGE-SPECIFIC TIMER CONFIGURATION (in seconds)
 const pageTimers = {
-    'surveyT0.html'         :   5, 
-    'baseline.html'         :   5, 
-    'surveyT1.html'         :   5,
-    'nBackLetter.html'      :   5, 
-    'stroopWord.html'       :   5, 
-    'visualCount.html'      :   5, 
-    'flankerArrow.html'     :   5,
-    'surveyT2.html'         :   5, 
-    'nBackDigit.html'       :   5, 
-    'stroopWordImage.html'  :   5,
-    'visualShape.html'      :   5, 
-    'flankerDigit.html'     :   5, 
-    'surveyT3.html'         :   5
+    'surveyT0.html'         :   5*60, 
+    'baseline.html'         :   5*60, 
+    'surveyT1.html'         :   5*60,
+    'nBackLetter.html'      :   5*60, 
+    'stroopWord.html'       :   5*60, 
+    'visualCount.html'      :   5*60, 
+    'flankerArrow.html'     :   5*60,
+    'surveyT2.html'         :   5*60, 
+    'nBackDigit.html'       :   5*60, 
+    'stroopWordImage.html'  :   5*60,
+    'visualShape.html'      :   5*60, 
+    'flankerDigit.html'     :   5*60, 
+    'surveyT3.html'         :   5*60
 };
 
 // 7. PAGE NAVIGATION MAP
