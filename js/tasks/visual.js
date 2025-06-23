@@ -20,18 +20,20 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     
     const shapeTaskData = [
-        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
-        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/image1_dif.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/image2_dif.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/image3_same.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'SAME' },
+        { image: 'media/visual_processing/shape/image4_same.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'SAME' },
+        { image: 'media/visual_processing/shape/image5_same.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'SAME' },
+        { image: 'media/visual_processing/shape/image6_same.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'SAME' },
+        { image: 'media/visual_processing/shape/image7_dif.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/image8_dif.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/image9_dif.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/image10_same.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'SAME' },
+        { image: 'media/visual_processing/shape/image11_same.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'SAME' },
+        { image: 'media/visual_processing/shape/image12_dif.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/image13_same.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'SAME' },
+        { image: 'media/visual_processing/shape/image14_dif.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
     ];
 
     const shuffle = (array) => array.sort(() => Math.random() - 0.5);
