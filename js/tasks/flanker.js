@@ -19,16 +19,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let trials = [];
     let currentTrialIndex = 0;
     let stimulusStartTime = 0;
-    let isDigitTask = false;
 
     // --- CORE LOGIC ---
     function initializeTask() {
         const path = window.location.pathname;
         if (path.includes('flankerDigit.html')) {
-            isDigitTask = true;
             setupDigitTask();
         } else {
-            isDigitTask = false;
             setupArrowTask();
         }
         startBtn.addEventListener('click', startBlock);
@@ -58,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
             let stimulus = '';
             let correctResponse = (target === '<') ? 'Left' : 'Right';
             switch (condition) {
-                case 'Congruent': stimulus = `${target}${target}${target}${target}${target}`; break;
-                case 'Incongruent': const flanker = (target === '<') ? '>' : '<'; stimulus = `${flanker}${flanker}${target}${flanker}${flanker}`; break;
+                case 'Congruent': stimulus = `${target} ${target} ${target} ${target} ${target}`; break;
+                case 'Incongruent': const flanker = (target === '<') ? '>' : '<'; stimulus = `${flanker} ${flanker} ${target} ${flanker} ${flanker}`; break;
                 case 'Neutral': stimulus = `+ + ${target} + +`; break;
             }
             trialList.push({ taskType: 'Flanker-Arrow', condition, stimulus, target, correctResponse });
@@ -139,24 +136,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    // FIXED: Updated the data submission to use the reliable Google Apps Script method
+    // REVERTED: This function now submits data directly to the Flanker Google Form.
     function submitFlankerData(data) {
-        // Note: taskType is already part of the data object from the trial generation
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-            mode: 'cors'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.result !== 'success') {
-                console.error('Error writing Flanker data to spreadsheet:', data.error);
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            const entryId = FLANKER_FORM_ENTRIES[key];
+            if (entryId) {
+                formData.append(entryId, data[key]);
             }
-        })
-        .catch(error => {
-            console.error('Error submitting Flanker data:', error);
         });
+
+        fetch(FLANKER_FORM_URL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'
+        }).catch(console.error);
     }
 
     function showFinalCompletion() {

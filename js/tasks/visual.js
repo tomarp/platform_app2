@@ -4,11 +4,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- DATA & CONFIGURATION ---
     const countingTaskData = [
-        { image: './media/visual_processing/count/image1.png', question: 'Count the number of bicycles in the trees.', answer: 10 },
-        { image: './media/visual_processing/count/image2.png', question: 'Count the number of bicycles in the image.', answer: 10 },
+        { image: './media/visual_processing/count/bicycles_29.png', question: 'Count the number of bicycles in the trees.', answer: 29 },
+        { image: './media/visual_processing/count/cubes_5.png', question: 'Count the number of cubes in the image.', answer: 5 },
+        { image: './media/visual_processing/count/bicycles_22.png', question: 'Count the number of bicycles in the image.', answer: 22 },
+        { image: './media/visual_processing/count/books_22.png', question: 'Count the number of books in the image.', answer: 22 },
+        { image: './media/visual_processing/count/gates_20.png', question: 'Count the number of gates in the structure.', answer: 20 },
+        { image: './media/visual_processing/count/pencils_15.png', question: 'Count the number of pencils in the image.', answer: 15 },
+        { image: './media/visual_processing/count/rectangles_14.png', question: 'Count the number of rectangles in the structure.', answer: 14 },
+        { image: './media/visual_processing/count/squares_15.png', question: 'Count the number of squares in the image.', answer: 15 },
+        { image: './media/visual_processing/count/stairs_36.png', question: 'Count the number of stairs in the building.', answer: 36 },
+        { image: './media/visual_processing/count/stairs_65.png', question: 'Count the number of stairs in the image.', answer: 65 },
+        { image: './media/visual_processing/count/triangles_30.png', question: 'Count the number of triangles in the image.', answer: 30 },
+        { image: './media/visual_processing/count/stairs_90.png', question: 'Count the number of stairs in the image.', answer: 90 },
+        { image: './media/visual_processing/count/triangles_10.png', question: 'Count the number of triangles in the image.', answer: 10 },
     ];
     
     const shapeTaskData = [
+        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
+        { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
         { image: 'media/visual_processing/shape/DIFF_image1.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
         { image: 'media/visual_processing/shape/DIFF_image2.jpeg', question: 'Are the two shapes the SAME or DIFFERENT?', answer: 'DIFFERENT' },
     ];
@@ -46,13 +67,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isShapeTask) {
             responseButtons.forEach(btn => btn.addEventListener('click', handleShapeResponse));
         } else {
-            submitBtn.addEventListener('click', handleCountResponse);
-            answerInput.addEventListener('keydown', (event) => {
-                if (event.key === 'Enter') {
-                    event.preventDefault();
-                    handleCountResponse();
-                }
-            });
+            if(submitBtn) {
+                submitBtn.addEventListener('click', handleCountResponse);
+            }
+            if(answerInput) {
+                answerInput.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter') {
+                        event.preventDefault();
+                        handleCountResponse();
+                    }
+                });
+            }
         }
     }
 
@@ -117,25 +142,21 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(runNextTrial, 500);
     }
 
-    // FIXED: Updated the data submission to use the reliable Google Apps Script method
+    // REVERTED: This function now submits data directly to the Visual Task Google Form.
     function submitImageData(data) {
-        data.taskType = isShapeTask ? 'Visual-Shape' : 'Visual-Count'; // Add taskType for Apps Script routing
-
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-            mode: 'cors'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.result !== 'success') {
-                console.error('Error writing Visual data to spreadsheet:', data.error);
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            const entryId = IMAGE_TASK_FORM_ENTRIES[key];
+            if (entryId) {
+                formData.append(entryId, data[key]);
             }
-        })
-        .catch(error => {
-            console.error('Error submitting Visual data:', error);
         });
+
+        fetch(IMAGE_TASK_FORM_URL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'
+        }).catch(console.error);
     }
 
     function showFinalCompletion() {

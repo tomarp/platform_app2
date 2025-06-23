@@ -13,11 +13,36 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     const imageStroopData = [
-        { image: 'media/stroop/alone.png', word: 'ALONE', colorName: 'Red' },
-        { image: 'media/stroop/anger.png', word: 'ANGER', colorName: 'Yellow' },
-        { image: 'media/stroop/blessing.png', word: 'BLESSING', colorName: 'Blue' },
-        { image: 'media/stroop/book.png', word: 'BOOK', colorName: 'Green' },
-        // ... Add 20-30 more trials for a robust task
+        { image: './media/stroop/alone_yellow.png', word: 'ALONE', colorName: 'Yellow' },
+        { image: './media/stroop/anger_yellow.png', word: 'ANGER', colorName: 'Yellow' },
+        { image: './media/stroop/blessing_red.png', word: 'BLESSING', colorName: 'Red' },
+        { image: './media/stroop/book_yellow.png', word: 'BOOK', colorName: 'Yellow' },
+        { image: './media/stroop/car_red.png', word: 'CAR', colorName: 'Red' },
+        { image: './media/stroop/chair_green.png', word: 'CHAIR', colorName: 'Green' },
+        { image: './media/stroop/clock_yellow.png', word: 'CLOCK', colorName: 'Yellow' },
+        { image: './media/stroop/death_yellow.png', word: 'DEATH', colorName: 'Yellow' },
+        { image: './media/stroop/fears_green.png', word: 'FEARS', colorName: 'Green' },
+        { image: './media/stroop/fight_blue.png', word: 'FIGHT', colorName: 'Blue' },
+        { image: './media/stroop/flower_blue.png', word: 'FLOWER', colorName: 'Blue' },
+        { image: './media/stroop/glass_green.png', word: 'GLASS', colorName: 'Green' },
+        { image: './media/stroop/goodluck_red.png', word: 'GOODLUCK', colorName: 'Red' },
+        { image: './media/stroop/grief_yellow.png', word: 'GRIEF', colorName: 'Yellow' },
+        { image: './media/stroop/happy_red.png', word: 'HAPPY', colorName: 'Red' },
+        { image: './media/stroop/house_green.png', word: 'HOUSE', colorName: 'Green' },
+        { image: './media/stroop/huggs_blue.png', word: 'HUGGS', colorName: 'Blue' },
+        { image: './media/stroop/hurts_yellow.png', word: 'HURTS', colorName: 'Yellow' },
+        { image: './media/stroop/joyful_green.png', word: 'JOYFUL', colorName: 'Green' },
+        { image: './media/stroop/key_blue.png', word: 'KEY', colorName: 'Blue' },
+        { image: './media/stroop/laugh_blue.png', word: 'LAUGH', colorName: 'Blue' },
+        { image: './media/stroop/panic_green.png', word: 'PANIC', colorName: 'Green' },
+        { image: './media/stroop/paper_blue.png', word: 'PAPER', colorName: 'Blue' },
+        { image: './media/stroop/rainbow_yellow.png', word: 'RAINBOW', colorName: 'Yellow' },
+        { image: './media/stroop/sadly_green.png', word: 'SADLY', colorName: 'Green' },
+        { image: './media/stroop/smile_blue.png', word: 'SMILE', colorName: 'Blue' },
+        { image: './media/stroop/stone_blue.png', word: 'STONE', colorName: 'Blue' },
+        { image: './media/stroop/storm_blue.png', word: 'STORM', colorName: 'Blue' },
+        { image: './media/stroop/sunny_blue.png', word: 'SUNNY', colorName: 'Blue' },
+        { image: './media/stroop/window_green.png', word: 'WINDOW', colorName: 'Green' },
     ];
 
     const shuffle = (array) => array.sort(() => Math.random() - 0.5);
@@ -32,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const wordImage = document.getElementById('stroop-word-image');
     const fixationSpinner = document.getElementById('fixation-spinner');
     const responseArea = document.getElementById('stroop-response-area');
-
 
     // --- STATE MANAGEMENT ---
     let trials = [];
@@ -95,18 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (isImageTask) {
                 wordImage.src = trial.image;
-                // MODIFIED: Added a check and fallback default value to prevent errors.
-                wordImage.style.maxHeight = (typeof TASK_STYLING !== 'undefined' && TASK_STYLING.stroopImageHeight) 
-                    ? TASK_STYLING.stroopImageHeight 
-                    : '250px'; 
+                wordImage.style.maxHeight = '250px';
                 wordImage.style.display = 'block';
             } else {
                 wordDisplay.textContent = trial.word;
                 wordDisplay.style.color = trial.colorHex;
-                // MODIFIED: Added a check and fallback default value to prevent errors.
-                wordDisplay.style.fontSize = (typeof TASK_STYLING !== 'undefined' && TASK_STYLING.stroopWordFontSize) 
-                    ? TASK_STYLING.stroopWordFontSize 
-                    : '6rem'; 
+                wordDisplay.style.fontSize = '7rem'; 
                 wordDisplay.style.display = 'block';
             }
             
@@ -145,27 +163,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
+    // REVERTED: This function now submits data directly to the Stroop Google Form.
     function submitStroopData(data) {
-        // Add the taskType to the data object so our Apps Script knows where to put it
-        data.taskType = 'Stroop'; 
-
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-            mode: 'cors' // Use standard 'cors' mode
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.result !== 'success') {
-                console.error('Error writing to spreadsheet:', data.error);
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            const entryId = STROOP_FORM_ENTRIES[key];
+            if (entryId) {
+                formData.append(entryId, data[key]);
             }
-        })
-        .catch(error => {
-            console.error('Error submitting data:', error);
         });
+
+        fetch(STROOP_FORM_URL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors'
+        }).catch(console.error);
     }
 
     function showFinalCompletion() {

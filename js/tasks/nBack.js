@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // FIXED: Corrected the main container ID to match the HTML
     const nBackContainer = document.getElementById('n-back-container');
     if (!nBackContainer) return;
 
@@ -15,8 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
         3: { name: "3-Back", instruction: "Press 'TARGET' if the current number is the same as the number from 3 steps back.", trials: [{s:'7',c:'NON-TARGET'},{s:'1',c:'NON-TARGET'},{s:'4',c:'NON-TARGET'},{s:'7',c:'TARGET'},{s:'2',c:'NON-TARGET'},{s:'4',c:'TARGET'},{s:'8',c:'NON-TARGET'},{s:'2',c:'TARGET'},{s:'5',c:'NON-TARGET'},{s:'8',c:'TARGET'},{s:'2',c:'NON-TARGET'},{s:'5',c:'TARGET'},{s:'9',c:'NON-TARGET'},{s:'3',c:'NON-TARGET'},{s:'9',c:'TARGET'},{s:'5',c:'NON-TARGET'},{s:'6',c:'NON-TARGET'},{s:'9',c:'TARGET'},{s:'6',c:'NON-TARGET'},{s:'6',c:'TARGET'},{s:'0',c:'NON-TARGET'},{s:'6',c:'TARGET'},{s:'1',c:'NON-TARGET'},{s:'0',c:'TARGET'},{s:'4',c:'NON-TARGET'},{s:'3',c:'NON-TARGET'},{s:'8',c:'NON-TARGET'},{s:'4',c:'TARGET'},{s:'2',c:'NON-TARGET'},{s:'1',c:'NON-TARGET'}] }
     };
 
-    // --- DOM ELEMENTS ---
-    // FIXED: Corrected all element IDs to match the HTML files
     const instructionsDiv = document.getElementById('n-back-instructions');
     const taskAreaDiv = document.getElementById('n-back-task-area');
     const completionDiv = document.getElementById('n-back-completion');
@@ -25,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleEl = document.getElementById('n-back-title');
     const instructionTextEl = document.getElementById('n-back-instruction-text');
 
-    // --- STATE MANAGEMENT ---
     let currentLevel = 1;
     let trials;
     let trialIndex = 0;
@@ -33,15 +29,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let canRespond = false;
     let stimulusStartTime = 0;
     let taskData;
+    let taskIdentifier = '';
 
-    // --- CORE LOGIC ---
     function initializeTask() {
         const path = window.location.pathname;
+        // FIXED: Changed this condition to match the actual filename 'nBackDigit.html'
         if (path.includes('nBackDigit.html')) {
             taskData = nBackDigitData;
+            taskIdentifier = 'nBackDigit';
             titleEl.textContent = 'Task 1 (Round 2): N-Back Digits';
         } else {
             taskData = nBackLetterData;
+            taskIdentifier = 'nBackLetter';
             titleEl.textContent = 'Task 1: N-Back Letters';
         }
         setupNextLevel();
@@ -78,14 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         canRespond = false;
-        stimulusDisplay.textContent = ''; // Clear previous stimulus
-        
+        stimulusDisplay.textContent = '';
         stimulusDisplay.innerHTML = '<div class="fixation-cross" style="font-size: 4rem; color: inherit;">+</div>';
-        
         setTimeout(() => {
             const currentStimulus = trials[trialIndex].s;
             stimulusDisplay.classList.remove('stimulus-animate');
-            void stimulusDisplay.offsetWidth; // Trigger reflow
+            void stimulusDisplay.offsetWidth;
             stimulusDisplay.textContent = currentStimulus;
             stimulusDisplay.classList.add('stimulus-animate');
             stimulusHistory.push(currentStimulus);
@@ -104,6 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const trialData = {
             participantId: sessionStorage.getItem('participantId'),
             sessionId: sessionStorage.getItem('sessionId'),
+            taskType: taskIdentifier,
             level: currentLevel,
             trial: trialIndex + 1,
             stimulus: trials[trialIndex].s,
@@ -116,53 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
         trialIndex++;
         setTimeout(runNextTrial, 750);
     }
-
-    // FIXED: Updated the data submission to use the reliable Google Apps Script method
-
-    async function submitNBackData(data) {
-        data.taskType = 'NBack';
-        
-        // Use this for local development
-        const USE_PROXY = false; // Set to false in production
-        
-        let url = WEB_APP_URL;
-        if (USE_PROXY && location.hostname === 'localhost') {
-            url = `https://corsproxy.io/?${encodeURIComponent(WEB_APP_URL)}`;
-        }
-
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+    
+    function submitNBackData(data) {
+        const formData = new FormData();
+        Object.keys(data).forEach(key => {
+            const entryId = NBACK_FORM_ENTRIES[key];
+            if (entryId) {
+                formData.append(entryId, data[key]);
             }
-            
-            const text = await response.text();
-            try {
-                return text ? JSON.parse(text) : {};
-            } catch {
-                return { result: "success" };
-            }
-        } catch (error) {
-            console.error('Submission error:', error);
-            storeFailedSubmission(data);
-            throw error;
-        }
+        });
+        fetch(NBACK_FORM_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(console.error);
     }
-
-    function storeFailedSubmission(data) {
-        // Store in localStorage for later retry
-        const failedSubmissions = JSON.parse(localStorage.getItem('failedSubmissions') || []);
-        failedSubmissions.push(data);
-        localStorage.setItem('failedSubmissions', JSON.stringify(failedSubmissions));
-    }
-
 
     function endLevel() {
         endEvent(`NBack_Level_${currentLevel}_Quiz`);
@@ -171,17 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showFinalCompletion() {
-        const path = window.location.pathname;
-        const pageName = path.substring(path.lastIndexOf('/') + 1);
-        const eventType = getEventTypeForPage(pageName);
-        endEvent(eventType);
-        
-        instructionsDiv.style.display = 'none';
         taskAreaDiv.style.display = 'none';
         completionDiv.style.display = 'block';
     }
 
-    // --- EVENT LISTENERS ---
     startBtn.addEventListener('click', startLevel);
     document.querySelectorAll('.response-btn').forEach(button => {
         button.addEventListener('click', () => {
@@ -189,6 +144,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // --- INITIALIZATION ---
     initializeTask();
 });

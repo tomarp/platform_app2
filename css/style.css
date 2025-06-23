@@ -49,11 +49,11 @@ body::before {
     z-index: -1;
 }
 
-body#welcome-page::before { background-image: url('../media/background/img1.png'); }
-body#survey1-page::before { background-image: url('../media/background/GalaxyArt.png'); }
-body#baseline-page::before { background-image: url('../media/background/GalaxyArt.png'); }
-body#survey2-page::before { background-image: url('../media/background/img1.png'); }
-body#task-page::before { background-image: url('../media/background/GalaxyArt.png'); }
+body#welcome-page::before { background-image: url('../media/background/Cosmic-Illusion_2.png'); }
+body#survey1-page::before { background-image: url('../media/background/img1.png'); }
+body#baseline-page::before { background-image: url('../media/background/baseline.jpeg'); }
+body#survey2-page::before { background-image: url('../media/background/wired_brain_2.png'); }
+body#task-page::before { background-image: url('../media/background/wired_brain_3.png'); }
 
 body.dark-theme {
     color: var(--paragraph-color-dark);
@@ -84,9 +84,9 @@ h1, h2, h3, h4 {
 body.dark-theme h1, body.dark-theme h2, body.dark-theme h3, body.dark-theme h4 {
     color: var(--heading-color-dark);
 }
-h1 { font-size: 3.5rem; }
-h2 { font-size: 2.5rem; }
-h3 { font-size: 1.8rem; }
+h1 { font-size: 4.5rem; }
+h2 { font-size: 3.5rem; }
+h3 { font-size: 2.5rem; }
 h4 { font-size: 1.5rem; }
 p { font-size: 1.2rem; line-height: 1.6; max-width: 70ch; }
 
@@ -123,11 +123,11 @@ body.dark-theme .timer-text { fill: var(--heading-color-dark); }
 
 /* Fixed Logo Positioning */
 .logo-fixed { position: fixed; z-index: 998; }
-.logo-fixed img { max-height: 50px; width: auto; }
-#logo-top-center { top: 20px; left: 50%; transform: translateX(-50%); }
-#logo-bottom-left { bottom: 20px; left: 20px; }
-#logo-bottom-center { bottom: 20px; left: 50%; transform: translateX(-50%); }
-#logo-bottom-right { bottom: 20px; right: 20px; }
+.logo-fixed img { max-height: 100px; width: auto; }
+#logo-bottom-left1 { bottom: 20px; left: 5%; transform: translateX(-50%); }
+#logo-bottom-left2 { bottom: 20px; left: 250px ;}
+#logo-bottom-right1 { bottom: 20px; right: 12%; }
+#logo-bottom-right2 { bottom: 20px; right: 20px; }
 
 /* General Styles */
 .survey-container { width: 90%; max-width: 850px; height: 75vh; margin: 20px 0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
@@ -474,11 +474,8 @@ body.dark-theme .flanker-response-btn {
     z-index: 1000; /* Ensures the button is on top of other content */
 }
 
-/* --- (Existing styles before this section remain the same) --- */
-
 
 /* --- CORRECTED: Force-center instruction text --- */
-/* This rule is now part of the more general .instructions-container */
 #n-back-instructions p {
     text-align: center;
 }

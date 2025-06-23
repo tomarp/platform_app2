@@ -2,35 +2,24 @@
 //  CORE SCRIPT LOGIC
 // ===================================================================================
 
-/**
- * Creates a unique event type key based on the page filename.
- * @param {string} pageName - The filename of the current page.
- * @returns {string} The specific event type string for logging.
- */
-// FIXED: Function now uses the correct filenames from config.js
 function getEventTypeForPage(pageName) {
-    if (pageName.includes('surveyT')) return pageName.replace('.html', '');
-    if (pageName.includes('baseline')) return 'Baseline_Signal';
-    if (pageName.includes('nBackLetter')) return 'NBack_Letter_Task';
-    if (pageName.includes('nBackDigit')) return 'NBack_Digit_Task';
-    if (pageName.includes('stroopWord')) return 'Stroop_Word_Task';
-    if (pageName.includes('stroopWordImage')) return 'Stroop_Word_Image_Task';
-    if (pageName.includes('visualCount')) return 'Visual_Count_Task';
-    if (pageName.includes('visualShape')) return 'Visual_Shape_Task';
-    if (pageName.includes('flankerArrow')) return 'Flanker_Arrow_Task';
-    if (pageName.includes('flankerDigit')) return 'Flanker_Digit_Task';
+    if (pageName.includes('survey_t')) return pageName.replace('.html', '');
+    if (pageName.includes('baseline_signals')) return 'Baseline_Signal';
+    if (pageName.includes('n-back_letter')) return 'NBack_Letter_Task';
+    if (pageName.includes('n-back_digit')) return 'NBack_Digit_Task';
+    if (pageName.includes('stroop_word')) return 'Stroop_Word_Task';
+    if (pageName.includes('stroop_word-image')) return 'Stroop_Word_Image_Task';
+    if (pageName.includes('visual_count')) return 'Visual_Count_Task';
+    if (pageName.includes('visual_shape')) return 'Visual_Shape_Task';
+    if (pageName.includes('flanker_arrow')) return 'Flanker_Arrow_Task';
+    if (pageName.includes('flanker_digit')) return 'Flanker_Digit_Task';
     if (pageName.includes('end.html')) return 'Experiment_End_Page';
     if (pageName.includes('index.html')) return 'Welcome_Page';
     return 'Page_View';
 }
 
-
-/**
- * Starts a timer for a specific event.
- * @param {string} eventType - The type of event to start.
- * @param {string} eventDetail - Details about the event.
- */
 function startEvent(eventType, eventDetail) {
+    if (typeof EVENT_LOG_ENTRIES === 'undefined') return;
     const pId = sessionStorage.getItem('participantId');
     if (!pId && eventType !== 'Full_Experiment') return;
     const activeTimers = JSON.parse(sessionStorage.getItem('activeTimers') || '{}');
@@ -38,11 +27,8 @@ function startEvent(eventType, eventDetail) {
     sessionStorage.setItem('activeTimers', JSON.stringify(activeTimers));
 }
 
-/**
- * Ends a timer for a specific event and submits the log.
- * @param {string} eventType - The type of event to end.
- */
 function endEvent(eventType) {
+    if (typeof EVENT_LOG_ENTRIES === 'undefined' || typeof EVENT_LOG_FORM_URL === 'undefined') return;
     const pId = sessionStorage.getItem('participantId');
     const sId = sessionStorage.getItem('sessionId');
     if (!pId || !sId) return;
@@ -53,52 +39,36 @@ function endEvent(eventType) {
         const startTime = eventToLog.startTime;
         const duration = endTime - startTime;
 
-        const eventData = {
-            participantId: pId,
-            sessionId: sId,
-            eventType: eventType,
-            eventDetail: eventToLog.detail,
-            startTime: new Date(startTime).toISOString(),
-            endTime: new Date(endTime).toISOString(),
-            duration: duration
-        };
-
-        fetch(WEB_APP_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(eventData),
-            mode: 'cors'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.result !== 'success') {
-                console.error('Error writing event log to spreadsheet:', data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Error submitting event log:', error);
-        });
-
+        const formData = new FormData();
+        formData.append(EVENT_LOG_ENTRIES.participantId, pId);
+        formData.append(EVENT_LOG_ENTRIES.sessionId, sId);
+        formData.append(EVENT_LOG_ENTRIES.eventType, eventType);
+        formData.append(EVENT_LOG_ENTRIES.eventDetail, eventToLog.detail);
+        formData.append(EVENT_LOG_ENTRIES.startTime, new Date(startTime).toISOString());
+        formData.append(EVENT_LOG_ENTRIES.endTime, new Date(endTime).toISOString());
+        formData.append(EVENT_LOG_ENTRIES.duration, duration);
+        
+        fetch(EVENT_LOG_FORM_URL, { method: 'POST', body: formData, mode: 'no-cors' }).catch(console.error);
+        
         delete activeTimers[eventType];
         sessionStorage.setItem('activeTimers', JSON.stringify(activeTimers));
     }
 }
 
-
 document.addEventListener('DOMContentLoaded', () => {
+    // This safety check ensures that no code runs if the config file has an error.
+    if (typeof pageFlow === 'undefined' || typeof pageTimers === 'undefined') {
+        console.error("CRITICAL ERROR: config.js failed to load or has a syntax error. Application halted.");
+        document.body.innerHTML = '<div style="padding: 2em; text-align: center; font-family: sans-serif;"><h1>Configuration Error</h1><p>The application could not start. Please contact the administrator.</p></div>';
+        return; 
+    }
+
     const path = window.location.pathname;
     const currentPage = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
 
-    // --- Page Load Actions ---
-    if (currentPage === 'end.html') {
-        endEvent('Full_Experiment');
-    }
     const eventType = getEventTypeForPage(currentPage);
     startEvent(eventType, currentPage);
 
-    // --- Welcome Page Login Logic ---
     if (currentPage === 'index.html' || currentPage === '') {
         const showLoginBtn = document.getElementById('show-login-btn');
         const loginArea = document.getElementById('login-area');
@@ -108,39 +78,43 @@ document.addEventListener('DOMContentLoaded', () => {
         const sessionIdInput = document.getElementById('session-id');
         const submitLoginBtn = document.getElementById('submit-login-btn');
 
-        showLoginBtn.addEventListener('click', () => {
-            initialView.style.display = 'none';
-            loginArea.style.display = 'block';
-        });
-
-        function validateInputs() {
-            submitLoginBtn.disabled = !(participantIdInput.value.trim() && sessionIdInput.value.trim());
+        if(showLoginBtn) {
+            showLoginBtn.addEventListener('click', () => {
+                initialView.style.display = 'none';
+                loginArea.style.display = 'block';
+            });
         }
-        participantIdInput.addEventListener('input', validateInputs);
-        sessionIdInput.addEventListener('input', validateInputs);
 
-        submitLoginBtn.addEventListener('click', () => {
-            const pIdInput = participantIdInput.value.trim();
-            const sIdInput = sessionIdInput.value.trim();
-            sessionStorage.setItem('participantId', pIdInput);
-            sessionStorage.setItem('sessionId', sIdInput);
-            startEvent('Full_Experiment', `Participant: ${pIdInput}`);
-            loginArea.style.display = 'none';
-            startArea.style.display = 'block';
-        });
+        if(participantIdInput && sessionIdInput && submitLoginBtn) {
+            function validateInputs() {
+                submitLoginBtn.disabled = !(participantIdInput.value.trim() && sessionIdInput.value.trim());
+            }
+            participantIdInput.addEventListener('input', validateInputs);
+            sessionIdInput.addEventListener('input', validateInputs);
+
+            submitLoginBtn.addEventListener('click', () => {
+                const pIdInput = participantIdInput.value.trim();
+                const sIdInput = sessionIdInput.value.trim();
+                sessionStorage.setItem('participantId', pIdInput);
+                sessionStorage.setItem('sessionId', sIdInput);
+                startEvent('Full_Experiment', `Participant: ${pIdInput}`);
+                loginArea.style.display = 'none';
+                startArea.style.display = 'block';
+            });
+        }
     }
 
-    // --- Standard Page Setup ---
     const themeTogglePlaceholder = document.getElementById('theme-toggle');
     if (themeTogglePlaceholder) themeTogglePlaceholder.innerHTML = themeToggleHTML;
-    if (document.body.id === 'welcome-page') {
-        const logosPlaceholder = document.getElementById('logos-placeholder');
-        if (logosPlaceholder) logosPlaceholder.innerHTML = logosHTML;
+    
+    const logosPlaceholder = document.getElementById('logos-placeholder');
+    if (logosPlaceholder && document.body.id === 'welcome-page') {
+         logosPlaceholder.innerHTML = logosHTML;
     }
+
     const applyTheme = () => { const savedTheme = localStorage.getItem('theme') || 'light'; document.body.classList.toggle('dark-theme', savedTheme === 'dark'); };
     applyTheme();
 
-    // --- Visual Progress Timer ---
     const countdownTime = pageTimers[currentPage];
     if (countdownTime) {
         const timerContainer = document.getElementById('timer');
@@ -177,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 timerContainer.appendChild(svg);
             }
 
-            const updateTimer = () => {
+            const timerInterval = setInterval(() => {
                 if (timeLeft < 0) {
                     clearInterval(timerInterval);
                     const nextBtnContainer = document.getElementById('timer-next-btn-container');
@@ -185,11 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         const nextButton = document.createElement('button');
                         nextButton.id = 'next-btn';
                         nextButton.textContent = 'Continue';
-                        // FIXED: Added class for styling the timer's next button
                         nextButton.className = 'nav-button';
                         nextBtnContainer.appendChild(nextButton);
                     }
-                    timerContainer.style.display = 'none';
+                    if (timerContainer) timerContainer.style.display = 'none';
                     return;
                 }
                 const minutes = Math.floor(timeLeft / 60);
@@ -198,31 +171,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 timerText.textContent = `${minutes}:${seconds}`;
                 progressCircle.style.strokeDashoffset = circumference * (1 - (timeLeft / totalTime));
                 timeLeft--;
-            };
-            updateTimer();
-            const timerInterval = setInterval(updateTimer, 1000);
+            }, 1000);
         }
     }
 
-    // --- GLOBAL EVENT LISTENERS ---
     document.addEventListener('click', event => {
-        // Theme toggle
         if (event.target.closest('#theme-switch-btn')) {
             const isDark = document.body.classList.toggle('dark-theme');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
-        // Generic 'Next' button for page flow
         if (event.target.matches('#next-btn')) {
-            const nextPage = pageFlow[currentPage];
             const currentEventType = getEventTypeForPage(currentPage);
-            endEvent(currentEventType); // End event for the current page
+            endEvent(currentEventType);
+            
+            const nextPage = pageFlow[currentPage];
             if (nextPage) {
                 window.location.href = nextPage;
+            } else if (currentPage === 'end.html') {
+                endEvent('Full_Experiment');
             }
         }
     });
 
-    // --- Survey Iframe Logic ---
     const surveyIframe = document.getElementById('survey-iframe');
     if (surveyIframe) {
         let isInitialLoad = true;
@@ -233,6 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             const surveyEventType = getEventTypeForPage(currentPage);
             endEvent(surveyEventType);
+            
             const nextPage = pageFlow[currentPage];
             if (nextPage) {
                 window.location.href = nextPage;
