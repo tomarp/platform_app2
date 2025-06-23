@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function setupArrowTask() {
         titleEl.textContent = 'Task 4: Arrow Flanker Task';
-        instructionTextEl.innerHTML = `<p class="instruction-emphasis">Your task is to identify the direction of the <strong>middle arrow</strong>. Ignore the other arrows.</p><p>Use the buttons to indicate your choice.</p>`;
+        instructionTextEl.innerHTML = `<p class="instruction-emphasis">INSTRUCTIONS:</br>Your task is to identify the direction of the <strong>middle arrow</strong>. Ignore the other arrows.</br> Choose the correct option</p>`;
         responseArea.innerHTML = `<button class="flanker-response-btn" data-response="Left">&larr; Left</button><button class="flanker-response-btn" data-response="Right">Right &rarr;</button>`;
         trials = generateArrowTrials();
     }
