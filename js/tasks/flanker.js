@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setupDigitTask() {
         titleEl.textContent = 'Task 4 (Round 2): Digit Flanker Task';
-        instructionTextEl.innerHTML = `<p class="instruction-emphasis">Your task is to identify if the <strong>middle number</strong> is <strong>EVEN or ODD</strong>. Ignore the other numbers.</p><p>Use the buttons to indicate your choice.</p>`;
+        instructionTextEl.innerHTML = `<p class="instruction-emphasis">INSTRUCTIONS:</br>Your task is to identify if the <strong>middle number</strong> is <strong>EVEN or ODD</strong>, while ignoring the other numbers. </br> Middle number is the central one, for ex. same number of digit on left and right side</p>`;
         responseArea.innerHTML = `<button class="flanker-response-btn" data-response="Even">Even</button><button class="flanker-response-btn" data-response="Odd">Odd</button>`;
         trials = generateNumberTrials();
     }
