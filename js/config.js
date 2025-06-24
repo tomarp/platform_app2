@@ -29,7 +29,7 @@ const NBACK_FORM_ENTRIES = {
     response:      'entry.653194521',
     correct:       'entry.559207729',
     responseTime:  'entry.514183285',
-    taskType:      'entry.YOUR_NEW_ENTRY_ID' // IMPORTANT: Add a 'taskType' question to your form and put its entry ID here.
+    taskType:      'entry.1011139459' // IMPORTANT: Add a 'taskType' question to your form and put its entry ID here.
 };
 
 // 3. CONFIGURATION FOR THE "STROOP TASK DATA" FORM
